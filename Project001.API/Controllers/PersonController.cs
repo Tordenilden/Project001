@@ -26,16 +26,19 @@ namespace Project001.API.Controllers
         //    };
         //}
         [HttpGet]
-        public async Task<ActionResult<List<Person>>> Get()
+        public async Task<ActionResult> Get()
         {
+            // We wants to return some statuscodes
             PersonRepository repo = new PersonRepository();
-            return await repo.getPersons();
+            var persons = await repo.getPersons();
+            return Ok(persons); // This is code 200
         }
         #endregion eee
         [HttpGet("GetPersons")]
-        public async Task<ActionResult<List<Person>>> GetPersons()
+        public async Task<ActionResult> GetPersons()
         {
-            return await personRepository.getPersons();
+            var persons = await personRepository.getPersons();
+            return Ok(persons);
         }
 
     }
