@@ -11,48 +11,74 @@ namespace Project001.Repo.Repositories
 {
     public class PersonRepository : IPersonRepository
     {
+        #region initial
         // how do I use the Database? // ORM
-        private DatabaseContext context { get; set; } = new();
+        // new(); THIS IS ON Compile Time
+        private DatabaseContext context { get; set; } //= new();
 
-        #region start
-        public Task<Person> createPerson(Person person)
+        public PersonRepository(DatabaseContext d)
         {
-            throw new NotImplementedException();
+            context = d; //runtime
+            //context = new DatabaseContext();//compiletime
         }
-
-        public Task DeletePerson(int id)
-        {
-            throw new NotImplementedException();
-        }
-
 
         // make a method that can be called
         public string getName() { return "I am the Jedi"; }
 
-        public Task<Person> getPersonById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion initial
 
-        public Task<Person> getPersonByName(string name)
+        public async Task<Person> createPerson(Person person)
         {
-            throw new NotImplementedException();
+                context.Person.Add(person);
+                await context.SaveChangesAsync();
+                return person;
         }
-
-        #endregion start
+        public async Task<bool> DeletePerson(int id)
+        {
+            var person = await context.Person.FirstOrDefaultAsync(p => p.id == id);
+            bool deleted = false;
+            if (person != null)
+            {
+                context.Person.Remove(person);
+                await context.SaveChangesAsync();
+                deleted = true;
+            }
+            return deleted;
+        }
+        public async Task<Person> getPersonById(int id)
+        {
+            return await context.Person
+                .FirstOrDefaultAsync(obj => obj.id == id);
+        }
+        public async Task<Person> getPersonByName(string name)
+        {
+            return await context.Person
+            .FirstOrDefaultAsync(obj => obj.name == name);
+        }
         public async Task<List<Person>> getPersons()
         {
-            //Jeg skal benytte EF
-            // til at skrive noget LINQ som returnerer alle
-            // personer tilbage til en var variabel
-            // og dernæst returnerer denne...
-
             return await context.Person.ToListAsync();
         }
-
-        public Task<Person> updatePerson(Person person)
+        public async Task<Person> updatePerson(Person person)
         {
-            throw new NotImplementedException();
+            Person updatePerson = await getPersonById(person.id);
+            if (updatePerson != null)
+            {
+                updatePerson.age = person.age;
+                updatePerson.name = person.name;
+                updatePerson.cars = person.cars;
+            }
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                // return // her skulle der være en fejlkode....
+            }
+            return updatePerson;
         }
+
+
     }
 }

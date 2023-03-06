@@ -15,6 +15,6 @@ namespace Project001.Repo.Interface
         public Task<Person> getPersonByName(string name);
         public Task<Person> createPerson(Person person);
         public Task<Person> updatePerson(Person person);
-        public Task DeletePerson(int id);
+        public Task<bool> DeletePerson(int id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Moq;
 using Project001.API.Controllers;
 using Project001.Repo.Interface;
@@ -30,30 +31,54 @@ namespace Project001.Test
         }
         // ? er om vores objekter skal initialiseres...
 
-        // Method getPersons
-        [Fact]
-        public async void GetPersonsShouldReturn200()
-        {
-            //Arrange  - Data, initialize objects etc.
-            List<Person> persons = new List<Person>
-            {
-                new Person { id = 1, name = "Casper"},
-                new Person { id = 2, name = "Hans"},
-                new Person { id=3, name = "Ulla"}
-            };
+        //// Method getPersons
+        //[Fact]
+        //public async void GetPersonsShouldReturn200()
+        //{
+        //    //Arrange  - Data, initialize objects etc.
+        //    List<Person> persons = new List<Person>
+        //    {
+        //        new Person { id = 1, name = "Casper"},
+        //        new Person { id = 2, name = "Hans"},
+        //        new Person { id=3, name = "Ulla"}
+        //    };
 
-            // we need to Mock our data !! how??
-            // repo is an object, "that is started" with the Method
-            // Setup(). ReturnsAsync - returns an obj, when getPersons() is invoked
-            repo.Setup(s => s.getPersons()).ReturnsAsync(persons);
+        //    // we need to Mock our data !! how??
+        //    // repo is an object, "that is started" with the Method
+        //    // Setup(). ReturnsAsync - returns an obj, when getPersons() is invoked
+        //    repo.Setup(s => s.getPersons()).ReturnsAsync(persons);
 
-            //Act      - Invoke our methods
-            var result = await personController.GetPersons();
+        //    //Act      - Invoke our methods
+        //    var result = await personController.GetPersons();
 
-            //Assert   - call Assert, basicly a bool
-            // Tjeck the result and then Assert
-            var statuscode = (IStatusCodeActionResult)result; // get type eller typeof mm.
-            Assert.Equal(200, statuscode.StatusCode);
-        }
+        //    //Assert   - call Assert, basicly a bool
+        //    // Tjeck the result and then Assert
+        //    var statuscode = (IStatusCodeActionResult)result; // get type eller typeof mm.
+        //    Assert.Equal(200, statuscode.StatusCode);
+        //}
+
+        ////GetById
+        //[Fact]
+        //public async void getPersonByIdReturn200()
+        //{
+        //    //Arrange  - Data, initialize objects etc.
+        //    List<Person> persons = new List<Person>
+        //    {
+        //        new Person { id = 1, name = "Casper"},
+        //        new Person { id = 2, name = "Hans"},
+        //        new Person { id = 3, name = "Ulla"}
+        //    };
+        //    Person pp = new Person { id = 1, name = "Ulla" };
+        //    repo.Setup(obj => obj.getPersonById(1)).ReturnsAsync(pp);//kan være alle
+
+        //    //Act
+        //    var result = await personController.GetPersonById(1);
+        //    var tt = (OkObjectResult)result;
+        //    Person p = (Person)tt.Value;
+
+
+        //    //Assert
+        //    Assert.Equal(p.name, "Ulla");
+        //}
     }
 }

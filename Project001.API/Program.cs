@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Project001.Repo.Interface;
+using Project001.Repo.Models;
 using Project001.Repo.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,9 @@ builder.Services.AddControllers();
 
 
 // 1 line for each Controller - Every model has a line
+builder.Services.AddDbContext<DatabaseContext>
+    (options => options.UseSqlServer(builder.Configuration.GetConnectionString("Con")));
+//builder.Services.AddDbContext<Da>
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 // Everytime I define a Model / DTO
